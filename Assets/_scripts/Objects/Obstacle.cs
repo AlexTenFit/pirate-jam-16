@@ -26,7 +26,6 @@ public class Obstacle : MonoBehaviour
     {
         if (other.gameObject.CompareTag("chosen"))
         {
-
             Destroy(other.gameObject);
             SceneManager.LoadScene("Game");
         }
