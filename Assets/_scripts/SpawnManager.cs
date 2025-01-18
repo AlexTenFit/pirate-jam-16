@@ -13,7 +13,7 @@ public class SpawnManager : MonoBehaviour
 
     void OnDrawGizmos() // Draws a cube to show where the spawn points are
     {
-        Gizmos.color = Color.red; // Sets the color to red
+        Gizmos.color = Color.red;
         foreach (Transform spawnPoint in spawnPoints)
         {
             if (spawnPoint != null)
@@ -25,17 +25,28 @@ public class SpawnManager : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(SpawnEnemies(baseEnemiesPerWave, spawnDelay));
+        StartCoroutine(SpawnWaves());
     }
 
+    IEnumerator SpawnWaves()
+    {
+        while (true)
+        {
+            yield return StartCoroutine(SpawnEnemies(baseEnemiesPerWave, spawnDelay)); // Spawn enemies for the current wave
+            while (currentEnemyCount > 0)   // Wait for all enemies to be destroyed before continuing to the next wave
+            {
+                yield return null; // Wait for the next frame, check if the count of enemies is still > 0
+            }
+            waveNumber++; // Increment wave number and adjust enemy count for the next wave
+        }
+    }
     IEnumerator SpawnEnemies(int count, float delay)
     {
         float totalEnemiesThisWave = count * Mathf.Pow(enemyMultiplierPerWave, waveNumber - 1); // Multiply number of enemies per wave by 1.2x
-        int totalEnemiesToSpawn = Mathf.CeilToInt(totalEnemiesThisWave); // Rounds the totalEnemies float and returns the smalles int equal to float
+        int totalEnemiesToSpawn = Mathf.CeilToInt(totalEnemiesThisWave); // Rounds the totalEnemiesThisWave float and returns the smalles int equal to float
         for (int i = 0; i < totalEnemiesThisWave; i++)
         {
-            // Select a random spawn point
-            Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
+            Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)]; // Select a random spawn point
 
             if (spawnPoint != null)
             {
@@ -49,5 +60,9 @@ public class SpawnManager : MonoBehaviour
             }
             yield return new WaitForSeconds(delay);
         }
+    }
+    public void OnEnemyDeath()
+    {
+        currentEnemyCount--; // Decreases the enemy count at the current wave to reflect the number of remaining enemies 
     }
 }

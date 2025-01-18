@@ -7,10 +7,13 @@ public class Obstacle : MonoBehaviour
     [SerializeField] private float moveSpeed = 1f;
     [SerializeField] private float destroyDelay = 1f;
 
+    private SpawnManager spawnManager; // Declaring spawnManager field here
+
     // Start is called before the first frame update
     private void Start()
     {
         _target = GameObject.FindGameObjectWithTag("chosen").transform;
+        spawnManager = FindObjectOfType<SpawnManager>(); // Call SpawnManager in the scene
     }
 
     // Update is called once per frame
@@ -31,11 +34,23 @@ public class Obstacle : MonoBehaviour
         }
     }
 
-    private void OnParticleTriggerEnter(GameObject other)
+    public void TriggerOnParticleEnter(GameObject other) // Alex; I renamed it from 'OnParticleTriggerEnter' to avoid syntax issues
     {
         if (other.gameObject.CompareTag("Player"))
         {
             Destroy(gameObject);
+
+            if (spawnManager != null) // Notify the SpawnManager that this enemy has died
+            {
+                spawnManager.OnEnemyDeath(); // Call OnEnemyDeath to update the enemy count
+            }
+        }
+    }
+    private void OnDestroy()
+    {
+        if (spawnManager != null) // In case the enemy is destroyed without being caught in OnParticleTriggerEnter
+        {
+            spawnManager.OnEnemyDeath(); // Ensure that the death is counted
         }
     }
 }
