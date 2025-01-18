@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
 public class FollowMouse : MonoBehaviour
@@ -9,6 +11,12 @@ public class FollowMouse : MonoBehaviour
     [SerializeField, Tooltip("Height above ground")]
     private float cameraDistanceBuffer = .3f;
     
+    [SerializeField, Tooltip("Ray lifetime")]
+    private float particleLifeTime = .3f;
+
+    [SerializeField, Tooltip("Ray lifetime")]
+    private LayerMask enemyRayCastMask;
+    
     private float _distanceFromCamera;
 
     private void Start()
@@ -18,6 +26,37 @@ public class FollowMouse : MonoBehaviour
 
     // Update is called once per frame
     public void Update()
+    {
+        FollowMousePosition();
+    }
+
+    private void FixedUpdate()
+    {
+        RayCastCollision();
+    }
+
+    private void RayCastCollision()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        StartCoroutine(CastRay(ray));
+    }
+
+    private IEnumerator CastRay(Ray ray)
+    {
+        var particleLifeTimer = 0f;
+        while (particleLifeTimer < particleLifeTime)
+        {
+            if (Physics.Raycast(ray, out var hit, _distanceFromCamera, enemyRayCastMask))
+            {
+                Destroy(hit.transform.gameObject);
+            }
+            particleLifeTimer += Time.deltaTime;
+        }
+
+        yield return null;
+    }
+
+    private void FollowMousePosition()
     {
         // Get mouse position from input 
         // TODO: Adjust to different input methods
@@ -31,7 +70,7 @@ public class FollowMouse : MonoBehaviour
         Vector3 position = Vector3.Lerp(transform.position, mouseScreenToWorld, 1.0f - Mathf.Exp(-speed * Time.deltaTime));
         transform.position = position;
     }
-    
+
     // Preparation function to modify "mouse sensitivity"
     public void SetSpeed(float newSpeed)
     {

@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,13 +8,13 @@ public class Obstacle : MonoBehaviour
     [SerializeField] private float destroyDelay = 1f;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         _target = GameObject.FindGameObjectWithTag("chosen").transform;
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (!_target) return;
 
