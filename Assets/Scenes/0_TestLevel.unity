@@ -542,33 +542,8 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1088927281186541307, guid: 60a69d96d7cafa345ba33577300f4765,
         type: 3}
-      propertyPath: speed
-      value: 25
-      objectReference: {fileID: 0}
-    - target: {fileID: 1914894207383280040, guid: 60a69d96d7cafa345ba33577300f4765,
-        type: 3}
-      propertyPath: m_TagString
-      value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 2333804932919447365, guid: 60a69d96d7cafa345ba33577300f4765,
-        type: 3}
-      propertyPath: TriggerModule.enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2333804932919447365, guid: 60a69d96d7cafa345ba33577300f4765,
-        type: 3}
-      propertyPath: CollisionModule.enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2333804932919447365, guid: 60a69d96d7cafa345ba33577300f4765,
-        type: 3}
-      propertyPath: TriggerModule.primitives.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2333804932919447365, guid: 60a69d96d7cafa345ba33577300f4765,
-        type: 3}
-      propertyPath: TriggerModule.primitives.Array.data[0]
-      value: 
+      propertyPath: enemyRayCastMask.m_Bits
+      value: 64
       objectReference: {fileID: 0}
     - target: {fileID: 4597079424342457476, guid: 60a69d96d7cafa345ba33577300f4765,
         type: 3}
@@ -623,11 +598,6 @@ PrefabInstance:
     - target: {fileID: 5805825649490032440, guid: 60a69d96d7cafa345ba33577300f4765,
         type: 3}
       propertyPath: m_Name
-      value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 5805825649490032440, guid: 60a69d96d7cafa345ba33577300f4765,
-        type: 3}
-      propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -765,6 +735,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Bad
+      objectReference: {fileID: 0}
+    - target: {fileID: 1204739357370241120, guid: 658cd46e116e86a439b2bbac37a0eaf8,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1204739357370241120, guid: 658cd46e116e86a439b2bbac37a0eaf8,
+        type: 3}
+      propertyPath: m_TagString
+      value: destructable
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

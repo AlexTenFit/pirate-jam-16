@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,14 +10,14 @@ public class Obstacle : MonoBehaviour
     private bool _targetAlive;
     
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         _target = GameObject.FindGameObjectWithTag("chosen").transform;
         _targetAlive = true;
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (!_targetAlive) return;
         
@@ -28,12 +27,10 @@ public class Obstacle : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("chosen"))
-        {
-            _targetAlive = false;
-            Destroy(other.gameObject);
-            SceneManager.LoadScene("Game");
-        }
+        if (!other.gameObject.CompareTag("chosen")) return;
+        _targetAlive = false;
+        Destroy(other.gameObject);
+        SceneManager.LoadScene("Game");
     }
 
     private void OnParticleTriggerEnter(GameObject other)
