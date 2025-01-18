@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1962243246717059222}
   m_Layer: 0
   m_Name: Particle System
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3800,7 +3800,7 @@ ParticleSystem:
     collidesWithDynamic: 1
     interiorCollisions: 0
   TriggerModule:
-    enabled: 0
+    enabled: 1
     serializedVersion: 2
     inside: 1
     outside: 0
@@ -4842,7 +4842,7 @@ GameObject:
   - component: {fileID: 1088927281186541307}
   m_Layer: 0
   m_Name: FollowMouse
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4875,5 +4875,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd90f25c8226d2e4c99cba194139daa2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 8
-  distanceFromCamera: 5
+  speed: 25
+  cameraDistanceBuffer: 0.3
+  particleLifeTime: 0.3
