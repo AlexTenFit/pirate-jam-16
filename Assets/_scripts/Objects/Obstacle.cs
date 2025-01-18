@@ -7,30 +7,28 @@ public class Obstacle : MonoBehaviour
     [SerializeField] private float moveSpeed = 1f;
     [SerializeField] private float destroyDelay = 1f;
 
-    private bool _targetAlive;
-    
     // Start is called before the first frame update
     private void Start()
     {
         _target = GameObject.FindGameObjectWithTag("chosen").transform;
-        _targetAlive = true;
     }
 
     // Update is called once per frame
     private void Update()
     {
-        if (!_targetAlive) return;
-        
+        if (!_target) return;
+
         Vector3 position = Vector3.Lerp(transform.position, _target.position, moveSpeed * Time.deltaTime);
         transform.position = position;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.gameObject.CompareTag("chosen")) return;
-        _targetAlive = false;
-        Destroy(other.gameObject);
-        SceneManager.LoadScene("Game");
+        if (other.gameObject.CompareTag("chosen"))
+        {
+            Destroy(other.gameObject);
+            SceneManager.LoadScene("Game");
+        }
     }
 
     private void OnParticleTriggerEnter(GameObject other)
