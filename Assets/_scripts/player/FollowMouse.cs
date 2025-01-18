@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FollowMouse : MonoBehaviour
@@ -7,22 +5,21 @@ public class FollowMouse : MonoBehaviour
     
     [SerializeField, Tooltip("Speed of the object following mouse")]
     private float speed = 8.0f;
-    [SerializeField, Tooltip("Adjusted to appear on screen correctly")]
-    private float distanceFromCamera = 5.0f;
     
-    // Start is called before the first frame update
-    void Start()
+    private float _distanceFromCamera = 5.0f;
+
+    private void Start()
     {
-        
+        _distanceFromCamera = Camera.main.transform.position.y - .3f;
     }
 
     // Update is called once per frame
-    void Update()
+    public void Update()
     {
         // Get mouse position from input 
         // TODO: Adjust to different input methods
         Vector3 mousePosition = Input.mousePosition;
-        mousePosition.z = distanceFromCamera;
+        mousePosition.z = _distanceFromCamera;
         
         // Determine mouse position's world point relative to screen's bounds
         Vector3 mouseScreenToWorld = Camera.main.ScreenToWorldPoint(mousePosition);
