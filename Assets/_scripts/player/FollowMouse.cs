@@ -5,12 +5,15 @@ public class FollowMouse : MonoBehaviour
     
     [SerializeField, Tooltip("Speed of the object following mouse")]
     private float speed = 8.0f;
+
+    [SerializeField, Tooltip("Height above ground")]
+    private float cameraDistanceBuffer = .3f;
     
-    private float _distanceFromCamera = 5.0f;
+    private float _distanceFromCamera;
 
     private void Start()
     {
-        _distanceFromCamera = Camera.main.transform.position.y - .3f;
+        _distanceFromCamera = Camera.main.transform.position.y - cameraDistanceBuffer;
     }
 
     // Update is called once per frame
