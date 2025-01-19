@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class Obstacle : MonoBehaviour
 {
@@ -29,23 +28,15 @@ public class Obstacle : MonoBehaviour
     {
         if (other.gameObject.CompareTag("chosen"))
         {
-            Destroy(other.gameObject);
-            SceneManager.LoadScene("Game");
-        }
-    }
+            HealthSystem.Instance.TakeDamage(1);
 
-    public void TriggerOnParticleEnter(GameObject other) // Alex; I renamed it from 'OnParticleTriggerEnter' to avoid syntax issues
-    {
-        if (other.gameObject.CompareTag("Player"))
-        {
-            Destroy(gameObject);
-
-            if (spawnManager != null) // Notify the SpawnManager that this enemy has died
+            if (HealthSystem.Instance.CurrentHealth <= 0)
             {
-                spawnManager.OnEnemyDeath(); // Call OnEnemyDeath to update the enemy count
+                Destroy(other.gameObject);
             }
         }
     }
+
     private void OnDestroy()
     {
         if (spawnManager != null) // In case the enemy is destroyed without being caught in OnParticleTriggerEnter
