@@ -32,6 +32,8 @@ public class SpawnManager : MonoBehaviour
     {
         while (true)
         {
+            UIManager.Instance.UpdateWaveCounter(waveNumber); // Call the UIManager to handle wave count visualization
+
             yield return StartCoroutine(SpawnEnemies(baseEnemiesPerWave, spawnDelay)); // Spawn enemies for the current wave
             while (currentEnemyCount > 0)   // Wait for all enemies to be destroyed before continuing to the next wave
             {
@@ -42,7 +44,7 @@ public class SpawnManager : MonoBehaviour
     }
     IEnumerator SpawnEnemies(int count, float delay)
     {
-        float totalEnemiesThisWave = count * Mathf.Pow(enemyMultiplierPerWave, waveNumber - 1); // Multiply number of enemies per wave by 1.2x
+        float totalEnemiesThisWave = count * Mathf.Pow(enemyMultiplierPerWave, waveNumber - 1); // Multiply number of enemies per wave based on the multiplier set
         int totalEnemiesToSpawn = Mathf.CeilToInt(totalEnemiesThisWave); // Rounds the totalEnemiesThisWave float and returns the smalles int equal to float
         for (int i = 0; i < totalEnemiesThisWave; i++)
         {
@@ -50,8 +52,7 @@ public class SpawnManager : MonoBehaviour
 
             if (spawnPoint != null)
             {
-                // Spawn the enemy at the chosen spawn point
-                GameObject spawnedEnemy = Instantiate(enemyPrefab, spawnPoint.position, spawnPoint.rotation);
+                GameObject spawnedEnemy = Instantiate(enemyPrefab, spawnPoint.position, spawnPoint.rotation); // Spawn the enemy at the chosen spawn point
                 currentEnemyCount++; // Increment the count of spawned enemies
             }
             else
