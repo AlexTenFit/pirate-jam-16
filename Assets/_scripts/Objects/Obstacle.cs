@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class Obstacle : MonoBehaviour
 {
@@ -7,10 +6,13 @@ public class Obstacle : MonoBehaviour
     [SerializeField] private float moveSpeed = 1f;
     [SerializeField] private float destroyDelay = 1f;
 
+    private SpawnManager spawnManager; // Declaring spawnManager field here
+
     // Start is called before the first frame update
     private void Start()
     {
         _target = GameObject.FindGameObjectWithTag("chosen").transform;
+        spawnManager = FindObjectOfType<SpawnManager>(); // Call SpawnManager in the scene
     }
 
     // Update is called once per frame
@@ -26,16 +28,20 @@ public class Obstacle : MonoBehaviour
     {
         if (other.gameObject.CompareTag("chosen"))
         {
-            Destroy(other.gameObject);
-            SceneManager.LoadScene("Game");
+            HealthSystem.Instance.TakeDamage(1);
+
+            if (HealthSystem.Instance.CurrentHealth <= 0)
+            {
+                Destroy(other.gameObject);
+            }
         }
     }
 
-    private void OnParticleTriggerEnter(GameObject other)
+    private void OnDestroy()
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (spawnManager != null) // In case the enemy is destroyed without being caught in OnParticleTriggerEnter
         {
-            Destroy(gameObject);
+            spawnManager.OnEnemyDeath(); // Ensure that the death is counted
         }
     }
 }
