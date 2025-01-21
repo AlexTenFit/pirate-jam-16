@@ -8,6 +8,7 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private int baseEnemiesPerWave = 1; // Total number of enemies to spawn
     [SerializeField] private float spawnDelay = 1f; // Time between each spawn
     [SerializeField] private float enemyMultiplierPerWave = 1.2f; // Enemy multiplier per wave
+    [SerializeField] private float spawnVariety = .5f; // Variety for spawn location around spawner
     private int currentEnemyCount = 0; // Current number of spawned enemies
     private int waveNumber = 1; // Initial wave that spawns one enemy
 
@@ -46,13 +47,16 @@ public class SpawnManager : MonoBehaviour
     {
         float totalEnemiesThisWave = count * Mathf.Pow(enemyMultiplierPerWave, waveNumber - 1); // Multiply number of enemies per wave based on the multiplier set
         int totalEnemiesToSpawn = Mathf.CeilToInt(totalEnemiesThisWave); // Rounds the totalEnemiesThisWave float and returns the smalles int equal to float
-        for (int i = 0; i < totalEnemiesThisWave; i++)
+        for (int i = 0; i < totalEnemiesToSpawn; i++)
         {
+            Vector3 variety = new Vector3(Random.Range(-spawnVariety, spawnVariety), 0,
+                Random.Range(-spawnVariety, spawnVariety)); // Create a random vector 3 in the variety range to add to the final spawn point
             Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)]; // Select a random spawn point
+            
 
             if (spawnPoint != null)
             {
-                GameObject spawnedEnemy = Instantiate(enemyPrefab, spawnPoint.position, spawnPoint.rotation); // Spawn the enemy at the chosen spawn point
+                GameObject spawnedEnemy = Instantiate(enemyPrefab, spawnPoint.position + variety, spawnPoint.rotation); // Spawn the enemy at the chosen spawn point
                 currentEnemyCount++; // Increment the count of spawned enemies
             }
             else

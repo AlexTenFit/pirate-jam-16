@@ -6,12 +6,15 @@ using Unity.VisualScripting.Antlr3.Runtime.Tree;
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; } // Singleton pattern for global access
+    
+    [SerializeField] private int heartSize = 75; // Set standard size of hearts for UI
 
     [SerializeField] private TextMeshProUGUI waveCounterText;
     [SerializeField] private Transform healthContainer;
     [SerializeField] private GameObject healthPrefab;
     [SerializeField] private Sprite fullHeartSprite;
     [SerializeField] private Sprite emptyHeartSprite;
+    
     private GameObject[] heartObjects;
     private Image[] heartFills;
 
@@ -60,6 +63,9 @@ public class UIManager : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+        
+        healthContainer.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, heartSize); // Set heart UI height
+        healthContainer.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, heartSize * maxHealth * 1.2f); // Set heart UI Width 
 
         // Initialize arrays
         heartObjects = new GameObject[maxHealth];

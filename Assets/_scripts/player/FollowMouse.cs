@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Diagnostics;
 
 public class FollowMouse : MonoBehaviour
 {
@@ -16,9 +17,14 @@ public class FollowMouse : MonoBehaviour
 
     [SerializeField, Tooltip("Ray lifetime")]
     private LayerMask enemyRayCastMask;
+
+    [SerializeField, Tooltip("Ray radius")]
+    private float rayCastRadius =  1f;
     
     private float _distanceFromCamera;
 
+    [Header("Debug"), Tooltip("Set to True to draw the hit circle"), SerializeField] private bool debug;
+    
     private void Start()
     {
         _distanceFromCamera = Camera.main.transform.position.y - cameraDistanceBuffer;
@@ -28,15 +34,12 @@ public class FollowMouse : MonoBehaviour
     public void Update()
     {
         FollowMousePosition();
-    }
-
-    private void FixedUpdate()
-    {
         RayCastCollision();
     }
-
+    
     private void RayCastCollision()
     {
+        // Determine a trajectory depending on the mouse's position on the screen
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         StartCoroutine(CastRay(ray));
     }
@@ -46,10 +49,16 @@ public class FollowMouse : MonoBehaviour
         var particleLifeTimer = 0f;
         while (particleLifeTimer < particleLifeTime)
         {
-            if (Physics.Raycast(ray, out var hit, _distanceFromCamera, enemyRayCastMask))
+            if (debug)
+            {
+                DebugExtension.DebugWireSphere(ray.origin + (ray.direction * _distanceFromCamera), Color.green, rayCastRadius);
+                Debug.Log("Ray origin: " + ray.origin);
+            }
+            if (Physics.SphereCast(ray, rayCastRadius, out var hit, _distanceFromCamera, enemyRayCastMask))
             {
                 Destroy(hit.transform.gameObject);
             }
+            
             particleLifeTimer += Time.deltaTime;
         }
 

@@ -4,23 +4,24 @@ public class Obstacle : MonoBehaviour
 {
     private Transform _target;
     [SerializeField] private float moveSpeed = 1f;
-    [SerializeField] private float destroyDelay = 1f;
 
-    private SpawnManager spawnManager; // Declaring spawnManager field here
+    private SpawnManager _spawnManager; // Declaring spawnManager field here
+
 
     // Start is called before the first frame update
     private void Start()
     {
-        _target = GameObject.FindGameObjectWithTag("chosen").transform;
-        spawnManager = FindObjectOfType<SpawnManager>(); // Call SpawnManager in the scene
+        _target = GameObject.FindGameObjectWithTag("chosen")?.transform; // Stores transform only if gameobject is found (? indicates if not null)
+        _spawnManager = FindObjectOfType<SpawnManager>(); // Call SpawnManager in the scene
     }
 
     // Update is called once per frame
     private void Update()
     {
-        if (!_target) return;
-
-        Vector3 position = Vector3.Lerp(transform.position, _target.position, moveSpeed * Time.deltaTime);
+        if (!_target) return; // Skip this logic if target is missing
+        
+        // Move towards target at a consistent speed
+        Vector3 position = Vector3.MoveTowards(transform.position, _target.position, moveSpeed * Time.deltaTime); 
         transform.position = position;
     }
 
@@ -28,6 +29,8 @@ public class Obstacle : MonoBehaviour
     {
         if (other.gameObject.CompareTag("chosen"))
         {
+            Destroy(gameObject);
+            
             HealthSystem.Instance.TakeDamage(1);
 
             if (HealthSystem.Instance.CurrentHealth <= 0)
@@ -39,9 +42,9 @@ public class Obstacle : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (spawnManager != null) // In case the enemy is destroyed without being caught in OnParticleTriggerEnter
+        if (_spawnManager != null) // In case the enemy is destroyed without being caught in OnParticleTriggerEnter
         {
-            spawnManager.OnEnemyDeath(); // Ensure that the death is counted
+            _spawnManager.OnEnemyDeath(); // Ensure that the death is counted
         }
     }
 }
