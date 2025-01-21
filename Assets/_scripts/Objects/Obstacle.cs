@@ -11,7 +11,8 @@ public class Obstacle : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        _target = GameObject.FindGameObjectWithTag("chosen")?.transform; // Stores transform only if gameobject is found (? indicates if not null)
+        _target = GameObject.FindGameObjectWithTag("chosen")
+            ?.transform; // Stores transform only if gameobject is found (? indicates if not null)
         _spawnManager = FindObjectOfType<SpawnManager>(); // Call SpawnManager in the scene
     }
 
@@ -19,9 +20,9 @@ public class Obstacle : MonoBehaviour
     private void Update()
     {
         if (!_target) return; // Skip this logic if target is missing
-        
+
         // Move towards target at a consistent speed
-        Vector3 position = Vector3.MoveTowards(transform.position, _target.position, moveSpeed * Time.deltaTime); 
+        Vector3 position = Vector3.MoveTowards(transform.position, _target.position, moveSpeed * Time.deltaTime);
         transform.position = position;
     }
 
@@ -30,7 +31,7 @@ public class Obstacle : MonoBehaviour
         if (other.gameObject.CompareTag("chosen"))
         {
             Destroy(gameObject);
-            
+
             HealthSystem.Instance.TakeDamage(1);
 
             if (HealthSystem.Instance.CurrentHealth <= 0)
