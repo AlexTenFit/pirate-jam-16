@@ -6,6 +6,7 @@ TagManager:
   tags:
   - chosen
   - destructable
+  - spawnPoint
   layers:
   - Default
   - TransparentFX
