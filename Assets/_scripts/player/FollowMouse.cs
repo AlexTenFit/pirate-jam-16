@@ -12,12 +12,6 @@ public class FollowMouse : MonoBehaviour
     [SerializeField, Tooltip("Ray lifetime")]
     private float particleLifeTime = .3f;
 
-    [SerializeField, Tooltip("Ray lifetime")]
-    private LayerMask enemyRayCastMask;
-
-    [SerializeField, Tooltip("Ray radius")]
-    private float rayCastRadius = 1f;
-
     private float _distanceFromCamera;
 
     [Header("Debug"), Tooltip("Set to True to draw the hit circle"), SerializeField]
@@ -32,37 +26,6 @@ public class FollowMouse : MonoBehaviour
     public void Update()
     {
         FollowMousePosition();
-        RayCastCollision();
-    }
-
-    private void RayCastCollision()
-    {
-        // Determine a trajectory depending on the mouse's position on the screen
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        StartCoroutine(CastRay(ray));
-    }
-
-    private IEnumerator CastRay(Ray ray)
-    {
-        var particleLifeTimer = 0f;
-        while (particleLifeTimer < particleLifeTime)
-        {
-            if (debug)
-            {
-                DebugExtension.DebugWireSphere(ray.origin + (ray.direction * _distanceFromCamera), Color.green,
-                    rayCastRadius);
-                Debug.Log("Ray origin: " + ray.origin);
-            }
-
-            if (Physics.SphereCast(ray, rayCastRadius, out var hit, _distanceFromCamera, enemyRayCastMask))
-            {
-                Destroy(hit.transform.gameObject);
-            }
-
-            particleLifeTimer += Time.deltaTime;
-        }
-
-        yield return null;
     }
 
     private void FollowMousePosition()

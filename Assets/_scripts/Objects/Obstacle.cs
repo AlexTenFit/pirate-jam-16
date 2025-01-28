@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Obstacle : MonoBehaviour
@@ -39,6 +40,11 @@ public class Obstacle : MonoBehaviour
                 Destroy(other.gameObject);
             }
         }
+    }
+
+    private void OnParticleCollision(GameObject other)
+    {
+        Destroy(gameObject);
     }
 
     private void OnDestroy()
